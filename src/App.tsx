@@ -199,7 +199,7 @@ const AudienceDashboard: React.FC = () => {
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App bg-gray-900 text-gray-100 max-w-screen-sm mx-auto p-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsList />} />
