@@ -19,7 +19,7 @@ interface ScoreDocument {
   storyId: string;
   category: string;
   value: number;
-  timestamp: number;
+  timestamp?: number;
 }
 
 interface Props {
@@ -44,8 +44,8 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'storyContent',
-    value: 7,
-    timestamp: Date.now()
+    value: 7
+    
   });
 
   const { doc: storytellingScore, merge: mergeStorytelling, save: saveStorytelling } = useDocument<ScoreDocument>({
@@ -55,8 +55,8 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'storytellingAbility',
-    value: 7,
-    timestamp: Date.now()
+    value: 7
+    
   });
 
   const { doc: technicalScore, merge: mergeTechnical, save: saveTechnical } = useDocument<ScoreDocument>({
@@ -66,8 +66,8 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'technical',
-    value: 7,
-    timestamp: Date.now()
+    value: 7
+    
   });
 
   useEffect(() => {
@@ -82,10 +82,10 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     }
   }, [storyContentScore, storytellingScore, technicalScore]);
 
-  const getScoreColor = (score: number): string => {
+  const getScoreColor = (score: number, grey?: boolean): string => {
     if (score < 5) return 'text-red-500';
     if (score >= 9) return 'text-green-500';
-    return 'text-blue-500';
+    return grey ? 'text-gray-500' : 'text-blue-500';
   };
 
   const handleScoreChange = (category: string, value: number) => {
@@ -119,14 +119,14 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
 
   const renderScoreSection = (title: string, category: string, description: string, scoreDoc: ScoreDocument | null) => {
     if (!scoreDoc) return null;
-    
+    console.log(scoreDoc);
     return (
       <div className="mb-8">
         <h2 className="text-xl text-gray-200 mb-4">{title}</h2>
         <p className="text-gray-400 mb-4">{description}</p>
         <div className="mb-4">
           <div className="flex justify-between items-center mb-2">
-            <span className={`font-bold ${getScoreColor(scoreDoc.value)}`}>
+            <span className={`font-bold ${getScoreColor(scoreDoc.value, !scoreDoc.timestamp)}`}>
               {scoreDoc.value}
             </span>
           </div>

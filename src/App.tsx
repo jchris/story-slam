@@ -46,7 +46,6 @@ const App: React.FC = () => {
             <Route index element={<JudgeOnboarding />} />
             <Route path="stories" element={<JudgeStories />} />
             <Route path="story/:storyId" element={<JudgeStoryView />} />
-            <Route path="story/:storyId/score" element={<ScoringInterface />} />
           </Route>
 
           {/* Audience routes */}
