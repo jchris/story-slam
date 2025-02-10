@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
+import { Story } from '../../../types';
 
 export const JudgeStories: React.FC = () => {
   const { eventId, judgeId } = useParams();
   const { useLiveQuery } = useFireproof(`events/${eventId}`);
 
   // Query stories that need to be judged
-  const { docs: stories } = useLiveQuery<{
-    storyteller: string,
-    timestamp: number,
-    status: string
-  }>('type', {
+  const { docs: stories } = useLiveQuery<Story>('type', {
       key: 'story'
     });
 

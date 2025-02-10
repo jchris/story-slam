@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
+import { Story } from '../../../types';
 
 export const ProducerStories: React.FC = () => {
   const { eventId } = useParams();
+  if (!eventId) { throw new Error('Event ID not found'); }
   const { database, useLiveQuery } = useFireproof(`events/${eventId}`);
   const [storyteller, setStoryteller] = useState('');
 
   // Query stories for this event
-  const { docs: stories } = useLiveQuery<{ storyteller: string, timestamp: number}>(
+  const { docs: stories } = useLiveQuery<Story>(
     'type',
     { descending: true, key: 'story' }
   );
@@ -17,13 +19,14 @@ export const ProducerStories: React.FC = () => {
     e.preventDefault();
     if (!storyteller.trim()) return;
 
-    await database.put({
+    const newStory: Omit<Story, '_id'> = {
       type: 'story',
       eventId,
       storyteller: storyteller.trim(),
       timestamp: Date.now(),
       status: 'pending'
-    });
+    }
+    await database.put(newStory);
     
     setStoryteller('');
   };
