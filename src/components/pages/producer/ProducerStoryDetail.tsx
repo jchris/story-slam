@@ -24,7 +24,7 @@ interface ScoreDocument {
 }
 
 const getScoreColor = (score: number, grey?: boolean): string => {
-  if (score < 5) return 'text-red-500';
+  if (score < 6) return 'text-red-500';
   if (score >= 9) return 'text-green-500';
   return grey ? 'text-gray-500' : 'text-blue-500';
 };
@@ -41,33 +41,39 @@ interface JudgeScoreCardProps {
 const JudgeScoreCard: React.FC<JudgeScoreCardProps> = ({ judge, scores }) => {
   const averageScore = Number(((scores.storyContent + scores.storytellingAbility + scores.technical) / 3).toFixed(1));
   
+  const getBackgroundColor = (score: number): string => {
+    if (score < 5) return 'bg-red-900';
+    if (score >= 9) return 'bg-green-900';
+    return 'bg-blue-900';
+  };
+
   return (
     <div className="bg-gray-800 rounded-lg p-4 mb-4">
       <div className="mb-2 text-gray-400 text-sm">Judge: {judge?.teamName}</div>
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <div className="text-gray-400 text-sm">Story Content:</div>
-          <div className={`text-lg font-bold ${getScoreColor(scores.storyContent)}`}>
-            {scores.storyContent}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <div>
+            <div className="text-gray-400 text-sm">Story Content:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.storyContent)}`}>
+              {scores.storyContent}
+            </div>
+          </div>
+          <div>
+            <div className="text-gray-400 text-sm">Storytelling:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.storytellingAbility)}`}>
+              {scores.storytellingAbility}
+            </div>
+          </div>
+          <div>
+            <div className="text-gray-400 text-sm">Technical:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.technical)}`}>
+              {scores.technical}
+            </div>
           </div>
         </div>
-        <div>
-          <div className="text-gray-400 text-sm">Storytelling:</div>
-          <div className={`text-lg font-bold ${getScoreColor(scores.storytellingAbility)}`}>
-            {scores.storytellingAbility}
-          </div>
-        </div>
-        <div>
-          <div className="text-gray-400 text-sm">Technical:</div>
-          <div className={`text-lg font-bold ${getScoreColor(scores.technical)}`}>
-            {scores.technical}
-          </div>
-        </div>
-        <div>
-          <div className="text-gray-400 text-sm">Average:</div>
-          <div className={`text-lg font-bold ${getScoreColor(averageScore)}`}>
-            {averageScore}
-          </div>
+        <div className={`${getBackgroundColor(averageScore)} rounded-lg p-4 flex flex-col items-center justify-center`}>
+          <div className="text-gray-200 text-sm mb-1">Average</div>
+          <div className="text-4xl font-bold text-white">{averageScore}</div>
         </div>
       </div>
     </div>

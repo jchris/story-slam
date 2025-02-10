@@ -7,7 +7,7 @@ interface FullScreenScoreProps {
 
 const FullScreenScore: React.FC<FullScreenScoreProps> = ({ score, onClose }) => {
   const getScoreColor = (score: number): string => {
-    if (score < 5) return 'text-red-500';
+    if (score < 6) return 'text-red-500';
     if (score >= 9) return 'text-green-500';
     return 'text-blue-500';
   };

@@ -44,8 +44,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'storyContent',
-    value: 7
-    
+    value: 8
   });
 
   const { doc: storytellingScore, merge: mergeStorytelling, save: saveStorytelling } = useDocument<ScoreDocument>({
@@ -55,8 +54,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'storytellingAbility',
-    value: 7
-    
+    value: 8
   });
 
   const { doc: technicalScore, merge: mergeTechnical, save: saveTechnical } = useDocument<ScoreDocument>({
@@ -66,8 +64,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     judgeId,
     storyId,
     category: 'technical',
-    value: 7
-    
+    value: 8
   });
 
   useEffect(() => {
@@ -83,7 +80,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
   }, [storyContentScore, storytellingScore, technicalScore]);
 
   const getScoreColor = (score: number, grey?: boolean): string => {
-    if (score < 5) return 'text-red-500';
+    if (score < 6) return 'text-red-500';
     if (score >= 9) return 'text-green-500';
     return grey ? 'text-gray-500' : 'text-blue-500';
   };
@@ -133,7 +130,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
           <input
             type="range"
             step="0.1"
-            min="1"
+            min="2"
             max="10"
             value={scoreDoc.value}
             onChange={(e) => handleScoreChange(category, Number(e.target.value))}
