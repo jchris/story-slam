@@ -1,5 +1,4 @@
 import React from 'react';
-import './FullScreenScore.css';
 
 interface FullScreenScoreProps {
   score: number;
@@ -7,15 +6,18 @@ interface FullScreenScoreProps {
 }
 
 const FullScreenScore: React.FC<FullScreenScoreProps> = ({ score, onClose }) => {
-  const getScoreClass = (score: number): string => {
-    if (score < 5) return 'low';
-    if (score >= 9) return 'high';
-    return 'medium';
+  const getScoreColor = (score: number): string => {
+    if (score < 5) return 'text-red-500';
+    if (score >= 9) return 'text-green-500';
+    return 'text-blue-500';
   };
 
   return (
-    <div className="fullscreen-score" onClick={onClose}>
-      <div className={`score ${getScoreClass(score)}`}>
+    <div 
+      className="fixed inset-0 bg-black flex justify-center items-center z-50 cursor-pointer"
+      onClick={onClose}
+    >
+      <div className={`text-[25vh] font-bold font-sans text-center leading-none p-5 rounded-2xl ${getScoreColor(score)}`}>
         {score.toFixed(1)}
       </div>
     </div>
