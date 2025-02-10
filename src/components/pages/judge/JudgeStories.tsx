@@ -23,7 +23,7 @@ export const JudgeStories: React.FC = () => {
               <li key={story._id}>
                 <Link
                   to={`/event/${eventId}/judge/${judgeId}/story/${story._id}`}
-                  className="block p-4 border rounded hover:bg-gray-100"
+                  className="block p-4 border rounded hover:bg-blue-800"
                 >
                   <div className="font-medium">{story.storyteller}</div>
                   <div className="text-sm text-gray-500">

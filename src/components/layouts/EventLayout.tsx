@@ -1,7 +1,7 @@
 import { Outlet, Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 
-type EventDoc = {
+export type EventDoc = {
   _id: string;
   name: string;
 }
@@ -14,7 +14,7 @@ export function EventLayout() {
   const {doc: event } = useDocument<EventDoc>({_id: 'event-info'} as EventDoc);
   
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
           <div className="mr-4 hidden md:flex">
