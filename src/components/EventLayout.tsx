@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 interface EventLayoutProps {
   children: ReactNode;
@@ -14,7 +14,7 @@ export function EventLayout({ children }: EventLayoutProps) {
         <div className="container flex h-14 items-center">
           <div className="mr-4 hidden md:flex">
             <div className="mr-6 flex items-center space-x-2">
-              Event ID: {eventId}
+              <Link className="link" to={`/event/${eventId}/producer`}>Event ID: {eventId}</Link>
             </div>
           </div>
         </div>

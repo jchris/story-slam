@@ -6,9 +6,19 @@ export const ProducerDashboard: React.FC = () => {
   return (
     <div>
       <h1>Producer Dashboard</h1>
-      <nav>
-        <Link to={`/event/${eventId}/producer/stories`}>Manage Stories</Link> |
-        <Link to={`/event/${eventId}/producer/judges`}>Manage Judges</Link>
+      <nav className="flex space-x-4">
+        <Link
+          to={`/event/${eventId}/producer/stories`}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Manage Stories
+        </Link>
+        <Link
+          to={`/event/${eventId}/producer/judges`}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Manage Judges
+        </Link>
       </nav>
     </div>
   );

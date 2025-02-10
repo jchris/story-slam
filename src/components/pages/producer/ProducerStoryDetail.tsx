@@ -6,8 +6,9 @@ export const ProducerStoryDetail: React.FC = () => {
   return (
     <div>
       <h1>Story Details</h1>
-      <p>Event ID: {eventId}</p>
+      
       <p>Story ID: {storyId}</p>
+      <p>Storyteller: </p>
     </div>
   );
 };
