@@ -153,7 +153,8 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     <div className="space-y-4">
       {/* Story Information */}
       {story && (
-        <div className="bg-white p-4 rounded-lg shadow mb-4">
+        <div className="p-4 rounded-lg shadow mb-4">
+          <h3 className="text-lg font-semibold mb-2">Story Information</h3>
           <div className="space-y-2">
             <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
             <p><span className="font-semibold">Time:</span> {new Date(story.timestamp).toLocaleString()}</p>
