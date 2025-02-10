@@ -34,7 +34,7 @@ const EventPage: React.FC = () => {
   const { eventId } = useParams();
   return (
     <div>
-      <h1>Event Dashboard</h1>
+      <h1>Storyslam Judging</h1>
       <nav>
         <Link to={`/event/${eventId}/producer`}>Producer Dashboard</Link>
       </nav>
