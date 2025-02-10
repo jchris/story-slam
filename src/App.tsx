@@ -6,7 +6,7 @@ import ScoringInterface from './components/ScoringInterface';
 // Page imports
 import Home from './components/pages/Home';
 import EventsList from './components/pages/EventsList';
-import EventPage from './components/pages/producer/EventPage';
+import EventPage from './components/pages/EventPage';
 import ProducerDashboard from './components/pages/producer/ProducerDashboard';
 import ProducerStories from './components/pages/producer/ProducerStories';
 import ProducerStoryDetail from './components/pages/producer/ProducerStoryDetail';
