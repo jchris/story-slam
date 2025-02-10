@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { EventLayout } from './components/EventLayout';
+import { EventLayout } from './components/layouts/EventLayout';
+import { ProducerLayout } from './components/layouts/ProducerLayout';
+import { JudgeLayout } from './components/layouts/JudgeLayout';
 import ScoringInterface from './components/pages/judge/ScoringInterface';
 
 // Page imports
@@ -25,27 +27,34 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsList />} />
           
-          {/* Event routes with EventLayout */}
-          <Route path="/event/:eventId" element={<EventLayout><EventPage /></EventLayout>} />
-          
-          {/* Producer routes */}
-          <Route path="/event/:eventId/producer" element={<EventLayout><ProducerDashboard /></EventLayout>} />
-          <Route path="/event/:eventId/producer/stories" element={<EventLayout><ProducerStories /></EventLayout>} />
-          <Route path="/event/:eventId/producer/story/:storyId" element={<EventLayout><ProducerStoryDetail /></EventLayout>} />
-          <Route path="/event/:eventId/producer/judges" element={<EventLayout><ProducerJudges /></EventLayout>} />
-          <Route path="/event/:eventId/producer/judge/:judgeId" element={<EventLayout><ProducerJudgeDetail /></EventLayout>} />
-          
+          {/* Event routes */}
+          <Route path="/event/:eventId" element={<EventLayout />}>
+              <Route index element={<EventPage />} />
+              
+              {/* Producer routes */}
+              <Route path="producer" element={<ProducerLayout />}>
+                <Route index element={<ProducerDashboard />} />
+                <Route path="stories" element={<ProducerStories />} />
+                <Route path="story/:storyId" element={<ProducerStoryDetail />} />
+                <Route path="judges" element={<ProducerJudges />} />
+                <Route path="judge/:judgeId" element={<ProducerJudgeDetail />} />
+              </Route>
+          </Route>
+
           {/* Judge routes */}
-          <Route path="/event/:eventId/judge/:judgeId" element={<EventLayout><JudgeOnboarding /></EventLayout>} />
-          <Route path="/event/:eventId/judge/:judgeId/stories" element={<EventLayout><JudgeStories /></EventLayout>} />
-          <Route path="/event/:eventId/judge/:judgeId/story/:storyId" element={<EventLayout><JudgeStoryView /></EventLayout>} />
-          
+          <Route path="/event/:eventId/judge/:judgeId" element={<JudgeLayout />}>
+            <Route index element={<JudgeOnboarding />} />
+            <Route path="stories" element={<JudgeStories />} />
+            <Route path="story/:storyId" element={<JudgeStoryView />} />
+            <Route path="story/:storyId/score" element={<ScoringInterface />} />
+          </Route>
+
           {/* Audience routes */}
-          <Route path="/event/:eventId/audience" element={<EventLayout><AudienceDashboard /></EventLayout>} />
+          <Route path="/event/:eventId/audience" element={<AudienceDashboard />} />
         </Routes>
       </div>
     </BrowserRouter>
   );
-};
+}
 
 export default App;

@@ -4,13 +4,18 @@ import ScoringInterface from './ScoringInterface';
 
 export const JudgeStoryView: React.FC = () => {
   const { eventId, judgeId, storyId } = useParams();
+
+  if (!eventId || !judgeId || !storyId) {
+    return <div>Missing required parameters</div>;
+  }
+
   return (
     <div>
-      <h1>Judge Story</h1>
-      <p>Event ID: {eventId}</p>
-      <p>Judge ID: {judgeId}</p>
-      <p>Story ID: {storyId}</p>
-      <ScoringInterface />
+      <ScoringInterface 
+        eventId={eventId}
+        judgeId={judgeId}
+        storyId={storyId}
+      />
     </div>
   );
 };
