@@ -1,15 +1,28 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useFireproof } from 'use-fireproof';
 
 export const ProducerJudges: React.FC = () => {
+  const navigate = useNavigate();
   const { eventId } = useParams();
+  const { database } = useFireproof(`events/${eventId}`);
+  const onAddJudge = async () => {
+    const ok = await database.put({
+      type: 'judge',
+      eventId,
+      name: '',
+      timestamp: Date.now(),
+      status: 'active'
+    });
+    // route to judge page for ok.id
+    navigate(`/event/${eventId}/producer/judge/${ok.id}`);
+  }
   return (
     <div>
       <h1>Judges Management</h1>
       <div>
-        <h2>Add Judge</h2>
-        <input type="text" placeholder="Judge Name" />
-        <button>Add Judge</button>
+        <h2>Add Judge team</h2>
+        <button onClick={onAddJudge}>Add Judge</button>
       </div>
       <div>
         <h2>Judge List</h2>
