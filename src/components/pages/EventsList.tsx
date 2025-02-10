@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useFireproof } from 'use-fireproof';
+import { fireproof, useFireproof } from 'use-fireproof';
 
 export const EventsList: React.FC = () => {
-  const { database, useLiveQuery } = useFireproof('story-judging');
+  const { database, useLiveQuery } = useFireproof('story-slam');
   const [newEventName, setNewEventName] = useState('');
   
   // Query events sorted by creation time
@@ -15,12 +15,14 @@ export const EventsList: React.FC = () => {
     e.preventDefault();
     if (!newEventName.trim()) return;
 
-    await database.put({
+    const ok = await database.put({
       type: 'event',
       name: newEventName.trim(),
       timestamp: Date.now(),
       status: 'active'
     });
+    const eventDb = fireproof(`events/${ok.id}`)
+    await eventDb.put({ _id: 'event-info', name: newEventName.trim()})
     
     setNewEventName('');
   };

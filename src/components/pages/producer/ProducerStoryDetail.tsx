@@ -10,6 +10,12 @@ interface Story {
   storyteller: string;
   timestamp: number;
   status: 'pending' | 'active' | 'complete';
+  frozenScore?: {
+    timestamp: number;
+    averageScores: {
+      [judgeId: string]: number;
+    };
+  };
 }
 
 interface ScoreDocument {
@@ -83,7 +89,7 @@ const JudgeScoreCard: React.FC<JudgeScoreCardProps> = ({ judge, scores }) => {
 export const ProducerStoryDetail: React.FC = () => {
   const { eventId, storyId } = useParams();
   const { useDocument, useLiveQuery } = useFireproof(`events/${eventId}`);
-  const { doc: story } = useDocument<Story>({ _id: storyId || '' } as Story);
+  const { doc: story, merge: mergeStory, save: saveStory } = useDocument<Story>({ _id: storyId || '' } as Story);
 
   // Query all scores for this story
   const { docs: scores } = useLiveQuery<ScoreDocument>('storyId', { key: storyId });
@@ -106,6 +112,33 @@ export const ProducerStoryDetail: React.FC = () => {
     return grouped;
   }, [scores]);
 
+  const calculateAverageScores = () => {
+    const averageScores: { [judgeId: string]: number } = {};
+    scoresByJudge.forEach((judgeScores, judgeId) => {
+      const total = judgeScores.reduce((sum, score) => sum + score.value, 0);
+      averageScores[judgeId] = Number((total / judgeScores.length).toFixed(1));
+    });
+    return averageScores;
+  };
+
+  const handleFreezeScores = async () => {
+    if (!story) return;
+    mergeStory({
+      frozenScore: {
+        timestamp: Date.now(),
+        averageScores: calculateAverageScores()
+      }
+    });
+    await saveStory();
+  };
+
+  const handleUnfreezeScores = async () => {
+    if (!story) return;
+    if (!story.frozenScore) return;
+    delete story.frozenScore;
+    await saveStory();
+  };
+
   if (!story) {
     return <div>Loading...</div>;
   }
@@ -114,6 +147,39 @@ export const ProducerStoryDetail: React.FC = () => {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Story Details</h1>
       
+      {story.frozenScore && (
+        <div className="bg-blue-900 rounded-lg p-4 mb-6">
+          <h2 className="text-xl text-white mb-2">Frozen Scores</h2>
+          <p className="text-gray-300 text-sm mb-4">Frozen at: {new Date(story.frozenScore.timestamp).toLocaleString()}</p>
+          <div className="grid grid-cols-2 gap-4">
+            {Object.entries(story.frozenScore.averageScores).map(([judgeId, score]) => (
+              <div key={judgeId} className="bg-blue-800 rounded p-3">
+                <div className="text-gray-300 text-sm">Judge: {judgesById.get(judgeId)?.teamName}</div>
+                <div className="text-2xl font-bold text-white">{score}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex space-x-4 mb-6">
+        {!story.frozenScore ? (
+          <button
+            onClick={handleFreezeScores}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Freeze Scores
+          </button>
+        ) : (
+          <button
+            onClick={handleUnfreezeScores}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Unfreeze Scores
+          </button>
+        )}
+      </div>
+
       <div className="space-y-2">
         <p><span className="font-semibold">Story ID:</span> {story._id}</p>
         <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
