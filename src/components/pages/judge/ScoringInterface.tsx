@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FullScreenScore from '../../FullScreenScore';
 
 interface ScoreCategory {
-  [key: string]: number;
+  value: number;
 }
 
 interface Scores {
@@ -14,21 +14,13 @@ interface Scores {
 const ScoringInterface: React.FC = () => {
   const [scores, setScores] = useState<Scores>({
     storyContent: {
-      compelling: 7,
-      clearArc: 7,
-      emotional: 7,
-      authentic: 7,
+      value: 7,
     },
     storytellingAbility: {
-      delivery: 7,
-      stagePresence: 7,
-      audience: 7,
-      narrative: 7,
+      value: 7,
     },
     technical: {
-      timing: 7,
-      theme: 7,
-      noNotes: 7,
+      value: 7,
     }
   });
 
@@ -37,9 +29,9 @@ const ScoringInterface: React.FC = () => {
 
   useEffect(() => {
     const allScores = [
-      ...Object.values(scores.storyContent),
-      ...Object.values(scores.storytellingAbility),
-      ...Object.values(scores.technical),
+      scores.storyContent.value,
+      scores.storytellingAbility.value,
+      scores.technical.value,
     ];
     const average = allScores.reduce((a, b) => a + b, 0) / allScores.length;
     setTotalScore(Number(average.toFixed(2)));
@@ -51,65 +43,77 @@ const ScoringInterface: React.FC = () => {
     return 'text-blue-500';
   };
 
-  const handleScoreChange = (category: keyof Scores, subcategory: string, value: number) => {
+  const handleScoreChange = (category: keyof Scores, value: number) => {
     setScores(prev => ({
       ...prev,
       [category]: {
-        ...prev[category],
-        [subcategory]: value
+        value
       }
     }));
   };
 
-  const renderScoreSection = (title: string, category: keyof Scores, subcategories: { [key: string]: number }) => (
-    <div className="bg-gray-50 p-6 rounded-lg shadow-sm mb-8">
-      <h2 className="text-xl text-gray-800 mb-6">{title}</h2>
-      {Object.entries(subcategories).map(([name, value]) => (
-        <div key={name} className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <label className="text-gray-700">{name}</label>
-            <span className={`font-bold ${getScoreColor(value)}`}>
-              {value}
-            </span>
-          </div>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={value}
-            onChange={(e) => handleScoreChange(category, name, Number(e.target.value))}
-            className="w-full"
-          />
+  const renderScoreSection = (title: string, category: keyof Scores, description: string, value: number) => (
+    <div className="bg-gray-800 p-6 rounded-lg mb-6 border border-gray-700">
+      <h2 className="text-xl text-gray-200 mb-4">{title}</h2>
+      <p className="text-gray-400 mb-4">{description}</p>
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-2">
+          <span className={`font-bold ${getScoreColor(value)}`}>
+            {value}
+          </span>
         </div>
-      ))}
-    </div>
+        <input
+          type="range"
+          step="0.1"
+          min="1"
+          max="10"
+          value={value}
+          onChange={(e) => handleScoreChange(category, Number(e.target.value))}
+          className="w-full accent-blue-500"
+        />
+      </div>
+    </div>  
   );
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl text-gray-800 text-center mb-8">The Moth Story Scoring</h1>
+    <div className="max-w-3xl mx-auto p-8 bg-gray-900 min-h-screen">
+      <h1 className="text-3xl text-gray-200 text-center mb-8">The Moth Story Scoring</h1>
       
-      {renderScoreSection('Story Content', 'storyContent', scores.storyContent)}
-      {renderScoreSection('Storytelling Ability', 'storytellingAbility', scores.storytellingAbility)}
-      {renderScoreSection('Technical Aspects', 'technical', scores.technical)}
+      <div className="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
+        {renderScoreSection(
+          'Story Content',
+          'storyContent',
+          'Rate how compelling, clear, emotional, and authentic the story content is',
+          scores.storyContent.value
+        )}
+        {renderScoreSection(
+          'Storytelling Ability',
+          'storytellingAbility',
+          'Evaluate the delivery, stage presence, audience engagement, and narrative flow',
+          scores.storytellingAbility.value
+        )}
+        {renderScoreSection(
+          'Technical Aspects',
+          'technical',
+          'Assess timing, theme adherence, and presentation without notes',
+          scores.technical.value
+        )}
 
-      <div className="text-center">
-        <div className="text-2xl font-bold mb-4">
-          Total Score: <span className={getScoreColor(totalScore)}>{totalScore}</span>
+        <div className="text-center pt-4 border-t border-gray-700">
+          <div className="text-2xl font-bold mb-4 text-gray-200">
+            Total Score: <span className={getScoreColor(totalScore)}>{totalScore}</span>
+          </div>
+          <button
+            onClick={() => setShowFullScreen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+          >
+            Show Full Screen Score
+          </button>
         </div>
-        <button
-          onClick={() => setShowFullScreen(true)}
-          className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Show Full Screen
-        </button>
       </div>
 
       {showFullScreen && (
-        <FullScreenScore
-          score={totalScore}
-          onClose={() => setShowFullScreen(false)}
-        />
+        <FullScreenScore score={totalScore} onClose={() => setShowFullScreen(false)} />
       )}
     </div>
   );
