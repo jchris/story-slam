@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FullScreenScore from './FullScreenScore';
+import FullScreenScore from '../../FullScreenScore';
 
 interface ScoreCategory {
   [key: string]: number;

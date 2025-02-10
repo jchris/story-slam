@@ -3,11 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 import { QRCodeSVG } from 'qrcode.react';
 
-interface Judge {
+export interface Judge {
   _id: string;
   type: 'judge';
   eventId: string;
-  name: string;
+  teamName: string;
   timestamp: number;
 }
 
@@ -18,7 +18,7 @@ export const ProducerJudgeDetail: React.FC = () => {
     _id: judgeId || '',
     type: 'judge',
     eventId: eventId || '',
-    name: '',
+    teamName: '',
     timestamp: Date.now()
   } as Judge);
 
@@ -31,7 +31,7 @@ export const ProducerJudgeDetail: React.FC = () => {
   }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    merge({ name: e.target.value });
+    merge({ teamName: e.target.value });
   };
 
   const handleSave = () => {
@@ -47,7 +47,7 @@ export const ProducerJudgeDetail: React.FC = () => {
       <div className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Judge Name
+            Judge Team Name
           </label>
           <div className="mt-1 flex rounded-md shadow-sm">
             <input
@@ -55,7 +55,7 @@ export const ProducerJudgeDetail: React.FC = () => {
               name="name"
               id="name"
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xl p-2 text-gray-900"
-              value={judge.name}
+              value={judge.teamName}
               onChange={handleNameChange}
             />
           </div>

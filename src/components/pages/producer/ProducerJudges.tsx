@@ -10,7 +10,7 @@ export const ProducerJudges: React.FC = () => {
     const ok = await database.put({
       type: 'judge',
       eventId,
-      name: '',
+      teamName: '',
       timestamp: Date.now(),
       status: 'active'
     });

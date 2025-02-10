@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { EventLayout } from './components/EventLayout';
-import ScoringInterface from './components/ScoringInterface';
+import ScoringInterface from './components/pages/judge/ScoringInterface';
 
 // Page imports
 import Home from './components/pages/Home';

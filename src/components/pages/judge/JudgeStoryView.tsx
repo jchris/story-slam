@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import ScoringInterface from '../../ScoringInterface';
+import ScoringInterface from './ScoringInterface';
 
 export const JudgeStoryView: React.FC = () => {
   const { eventId, judgeId, storyId } = useParams();
