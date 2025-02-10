@@ -15,21 +15,21 @@ interface Scores {
 const ScoringInterface: React.FC = () => {
   const [scores, setScores] = useState<Scores>({
     storyContent: {
-      compelling: 5,
-      clearArc: 5,
-      emotional: 5,
-      authentic: 5,
+      compelling: 7,
+      clearArc: 7,
+      emotional: 7,
+      authentic: 7,
     },
     storytellingAbility: {
-      delivery: 5,
-      stagePresence: 5,
-      audience: 5,
-      narrative: 5,
+      delivery: 7,
+      stagePresence: 7,
+      audience: 7,
+      narrative: 7,
     },
     technical: {
-      timing: 5,
-      theme: 5,
-      noNotes: 5,
+      timing: 7,
+      theme: 7,
+      noNotes: 7,
     }
   });
 
@@ -74,7 +74,7 @@ const ScoringInterface: React.FC = () => {
     category: keyof Scores,
     subcategory: string,
     label: string
-  ): JSX.Element => {
+  ) => {
     const score = scores[category][subcategory];
     const scoreClass = getScoreClass(score);
     
