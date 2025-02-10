@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
 import ScoringInterface from './components/ScoringInterface';
-import './App.css';
+import { EventLayout } from './components/EventLayout';
 
 // Page components
 const Home: React.FC = () => (
@@ -203,22 +203,24 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsList />} />
-          <Route path="/event/:eventId" element={<EventPage />} />
+          
+          {/* Event routes with EventLayout */}
+          <Route path="/event/:eventId" element={<EventLayout><EventPage /></EventLayout>} />
           
           {/* Producer routes */}
-          <Route path="/event/:eventId/producer" element={<ProducerDashboard />} />
-          <Route path="/event/:eventId/producer/stories" element={<ProducerStories />} />
-          <Route path="/event/:eventId/producer/story/:storyId" element={<ProducerStoryDetail />} />
-          <Route path="/event/:eventId/producer/judges" element={<ProducerJudges />} />
-          <Route path="/event/:eventId/producer/judge/:judgeId" element={<ProducerJudgeDetail />} />
+          <Route path="/event/:eventId/producer" element={<EventLayout><ProducerDashboard /></EventLayout>} />
+          <Route path="/event/:eventId/producer/stories" element={<EventLayout><ProducerStories /></EventLayout>} />
+          <Route path="/event/:eventId/producer/story/:storyId" element={<EventLayout><ProducerStoryDetail /></EventLayout>} />
+          <Route path="/event/:eventId/producer/judges" element={<EventLayout><ProducerJudges /></EventLayout>} />
+          <Route path="/event/:eventId/producer/judge/:judgeId" element={<EventLayout><ProducerJudgeDetail /></EventLayout>} />
           
           {/* Judge routes */}
-          <Route path="/event/:eventId/judge/:judgeId" element={<JudgeOnboarding />} />
-          <Route path="/event/:eventId/judge/:judgeId/stories" element={<JudgeStories />} />
-          <Route path="/event/:eventId/judge/:judgeId/story/:storyId" element={<JudgeStoryView />} />
+          <Route path="/event/:eventId/judge/:judgeId" element={<EventLayout><JudgeOnboarding /></EventLayout>} />
+          <Route path="/event/:eventId/judge/:judgeId/stories" element={<EventLayout><JudgeStories /></EventLayout>} />
+          <Route path="/event/:eventId/judge/:judgeId/story/:storyId" element={<EventLayout><JudgeStoryView /></EventLayout>} />
 
           {/* Audience route */}
-          <Route path="/event/:eventId/audience" element={<AudienceDashboard />} />
+          <Route path="/event/:eventId/audience" element={<EventLayout><AudienceDashboard /></EventLayout>} />
         </Routes>
       </div>
     </BrowserRouter>
