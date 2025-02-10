@@ -14,17 +14,13 @@ export interface Judge {
 export const ProducerJudgeDetail: React.FC = () => {
   const { eventId, judgeId } = useParams();
   const { useDocument } = useFireproof(`events/${eventId}`);
-  const { doc: judge, merge, save, error } = useDocument<Judge>({
+  const { doc: judge, merge, save } = useDocument<Judge>({
     _id: judgeId || '',
     type: 'judge',
     eventId: eventId || '',
     teamName: '',
     timestamp: Date.now()
   } as Judge);
-
-  if (error) {
-    return <div className="text-red-600">Error loading judge: {error.message}</div>;
-  }
 
   if (!judge) {
     return <div>Loading...</div>;

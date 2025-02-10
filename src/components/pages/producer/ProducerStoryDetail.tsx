@@ -14,11 +14,7 @@ interface Story {
 export const ProducerStoryDetail: React.FC = () => {
   const { eventId, storyId } = useParams();
   const { useDocument } = useFireproof(`events/${eventId}`);
-  const { doc: story, error } = useDocument<Story>({ _id: storyId || '' } as Story);
-
-  if (error) {
-    return <div className="text-red-600">Error loading story: {error.message}</div>;
-  }
+  const { doc: story } = useDocument<Story>({ _id: storyId || '' } as Story);
 
   if (!story) {
     return <div>Loading...</div>;
