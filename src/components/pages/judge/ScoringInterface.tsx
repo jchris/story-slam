@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useFireproof } from 'use-fireproof';
 import FullScreenScore from '../../FullScreenScore';
 
+interface Story {
+  _id: string;
+  type: 'story';
+  eventId: string;
+  storyteller: string;
+  timestamp: number;
+  status: 'pending' | 'active' | 'complete';
+}
+
 interface ScoreDocument {
   _id: string;
   type: 'score';
@@ -23,6 +32,9 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
   const { useDocument } = useFireproof(`events/${eventId}`);
   const [showFullScreen, setShowFullScreen] = useState<boolean>(false);
   const [totalScore, setTotalScore] = useState<number>(0);
+
+  // Fetch the story document
+  const { doc: story } = useDocument<Story>({ _id: storyId } as Story);
 
   // Create or load documents for each score category
   const { doc: storyContentScore, merge: mergeStoryContent, save: saveStoryContent } = useDocument<ScoreDocument>({
@@ -109,7 +121,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     if (!scoreDoc) return null;
     
     return (
-      <div className="bg-gray-800 p-6 rounded-lg mb-6 border border-gray-700">
+      <div className="mb-8">
         <h2 className="text-xl text-gray-200 mb-4">{title}</h2>
         <p className="text-gray-400 mb-4">{description}</p>
         <div className="mb-4">
@@ -138,45 +150,58 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-gray-900 min-h-screen">
-      <h1 className="text-3xl text-gray-200 text-center mb-8">The Moth Story Scoring</h1>
-      
-      <div className="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
-        {renderScoreSection(
-          'Story Content',
-          'storyContent',
-          'Rate how compelling, clear, emotional, and authentic the story content is',
-          storyContentScore
-        )}
-        {renderScoreSection(
-          'Storytelling Ability',
-          'storytellingAbility',
-          'Evaluate the delivery, stage presence, audience engagement, and narrative flow',
-          storytellingScore
-        )}
-        {renderScoreSection(
-          'Technical Aspects',
-          'technical',
-          'Assess timing, theme adherence, and presentation without notes',
-          technicalScore
-        )}
-
-        <div className="text-center pt-4 border-t border-gray-700">
-          <div className="text-2xl font-bold mb-4 text-gray-200">
-            Total Score: <span className={getScoreColor(totalScore)}>{totalScore}</span>
+    <div className="space-y-4">
+      {/* Story Information */}
+      {story && (
+        <div className="bg-white p-4 rounded-lg shadow mb-4">
+          <div className="space-y-2">
+            <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
+            <p><span className="font-semibold">Time:</span> {new Date(story.timestamp).toLocaleString()}</p>
           </div>
-          <button
-            onClick={() => setShowFullScreen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Show Full Screen Score
-          </button>
         </div>
-      </div>
-
-      {showFullScreen && (
-        <FullScreenScore score={totalScore} onClose={() => setShowFullScreen(false)} />
       )}
+      
+      {/* Existing scoring interface content */}
+      <div className="max-w-3xl mx-auto p-8 bg-gray-900 min-h-screen">
+        <h1 className="text-3xl text-gray-200 text-center mb-8">Story Scoring</h1>
+        
+        <div className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
+          {renderScoreSection(
+            'Story Content',
+            'storyContent',
+            'Rate how compelling, clear, emotional, and authentic the story content is',
+            storyContentScore
+          )}
+          {renderScoreSection(
+            'Storytelling Ability',
+            'storytellingAbility',
+            'Evaluate the delivery, stage presence, audience engagement, and narrative flow',
+            storytellingScore
+          )}
+          {renderScoreSection(
+            'Technical Aspects',
+            'technical',
+            'Assess timing, theme adherence, and presentation without notes',
+            technicalScore
+          )}
+
+          <div className="text-center pt-4 border-t border-gray-700">
+            <div className="text-2xl font-bold mb-4 text-gray-200">
+              Total Score: <span className={getScoreColor(totalScore)}>{totalScore}</span>
+            </div>
+            <button
+              onClick={() => setShowFullScreen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Show Full Screen Score
+            </button>
+          </div>
+        </div>
+
+        {showFullScreen && (
+          <FullScreenScore score={totalScore} onClose={() => setShowFullScreen(false)} />
+        )}
+      </div>
     </div>
   );
 };
