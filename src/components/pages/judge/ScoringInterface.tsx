@@ -69,6 +69,7 @@ const ScoringInterface: React.FC = () => {
           max="10"
           value={value}
           onChange={(e) => handleScoreChange(category, Number(e.target.value))}
+          onMouseUp={(e) => console.log(`${category} score: ${value}`)}
           className="w-full accent-blue-500"
         />
       </div>
