@@ -2,6 +2,7 @@ import { Link, Outlet, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 import { Judge } from '../../types';
 import { useState } from 'react';
+import { EventDoc } from './EventLayout';
 
 export function JudgeLayout() {
   const { eventId, judgeId } = useParams();
@@ -10,6 +11,7 @@ export function JudgeLayout() {
   const { useDocument } = useFireproof(`events/${eventId}`);
   const { doc: judge } = useDocument<Judge>({ _id: judgeId } as Judge);
   const [nickname] = useState(() => localStorage.getItem(`judge-${judgeId}-nickname`) || '');
+  const { doc: event } = useDocument<EventDoc>({_id: 'event-info'} as EventDoc);
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
@@ -17,7 +19,7 @@ export function JudgeLayout() {
         <div className="container flex h-14 items-center">
           <div className="mr-4 hidden md:flex">
             <div className="mr-6 flex items-center space-x-2">
-              <Link className="link" to={`/event/${eventId}/judge/${judgeId}`}>Event: {eventId}</Link>
+              <Link className="link" to={`/event/${eventId}/judge/${judgeId}`}>Event: {event.name}</Link>
             </div>
           </div>
         </div>
