@@ -183,11 +183,9 @@ export const ProducerStoryDetail: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Story Details</h1>
-
-      <div className="space-y-2">
-        <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
-        <p><span className="font-semibold">Created:</span> {new Date(story.timestamp).toLocaleString()}</p>
+      <div className="space-y-1">
+        <h1 className="text-4xl font-medium">Storyteller: {story.storyteller}</h1>
+        <p className="text-gray-400 text-sm text-right">{new Date(story.timestamp).toLocaleString()}</p>
       </div>
 
       {frozenScores.timestamp && frozenScores.averageScores && frozenScores.finalScore && (
