@@ -201,7 +201,7 @@ export const ProducerStoryDetail: React.FC = () => {
             <div className={`${getScoreBackgroundColor(frozenScores.finalScore)} rounded-lg p-4 shadow-lg`}>
              <div className="text-gray-200 font-medium mb-1"> Final Score</div>
               <div className={`text-3xl font-bold ${getScoreColor(frozenScores.finalScore)}`}>
-                {frozenScores.finalScore}
+                {Number(frozenScores.finalScore).toFixed(1)}
               </div>
             </div>
           </div>
