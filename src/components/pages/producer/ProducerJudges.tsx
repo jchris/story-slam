@@ -30,8 +30,8 @@ export const ProducerJudges: React.FC = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-100 mb-6">Judges Management</h1>
         
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Add Judge Team</h2>
+        <div className="bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+          <h2 className="text-xl font-semibold text-gray-100 mb-4">Add Judge Team</h2>
           <div className="space-y-4">
             <button
               onClick={onAddJudge}
@@ -42,21 +42,21 @@ export const ProducerJudges: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Judge Teams List</h2>
+        <div className="bg-gray-800 rounded-lg shadow-sm p-6">
+          <h2 className="text-xl font-semibold text-gray-100 mb-4">Judge Teams List</h2>
           {judges.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No judges added yet</p>
+            <p className="text-gray-400 text-center py-4">No judges added yet</p>
           ) : (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-gray-700">
               {judges.map((judge) => (
                 <li key={judge._id}>
                   <Link
                     to={`/event/${eventId}/producer/judge/${judge._id}`}
-                    className="block py-4 px-2 hover:bg-gray-50 rounded-md transition duration-150 ease-in-out"
+                    className="block py-4 px-2 hover:bg-gray-700 rounded-md transition duration-150 ease-in-out"
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-900">{judge.teamName || 'Unnamed Team'}</span>
-                      <span className="text-sm text-gray-500">{new Date(judge.timestamp).toLocaleString()}</span>
+                      <span className="font-medium text-gray-100">{judge.teamName || 'Unnamed Team'}</span>
+                      <span className="text-sm text-gray-400">{new Date(judge.timestamp).toLocaleString()}</span>
                     </div>
                   </Link>
                 </li>
