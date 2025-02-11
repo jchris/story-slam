@@ -29,10 +29,18 @@ interface ScoreDocument {
   timestamp?: number;
 }
 
-const getScoreColor = (score: number, grey?: boolean): string => {
-  if (score < 6) return 'text-red-500';
-  if (score >= 9) return 'text-green-500';
-  return grey ? 'text-gray-500' : 'text-blue-500';
+// const getScoreColor = (score: number, grey?: boolean): string => {
+//   if (score < 6) return 'text-red-500';
+//   if (score >= 9) return 'text-green-500';
+//   return grey ? 'text-gray-500' : 'text-blue-500';
+// };
+
+const getScoreBackgroundColor = (score: number): string => {
+  if (score < 3) return 'bg-red-800';
+  if (score < 5) return 'bg-red-700';
+  if (score < 7) return 'bg-yellow-700';
+  if (score < 8.5) return 'bg-green-700';
+  return 'bg-green-800';
 };
 
 interface JudgeScoreCardProps {
@@ -46,38 +54,32 @@ interface JudgeScoreCardProps {
 
 const JudgeScoreCard: React.FC<JudgeScoreCardProps> = ({ judge, scores }) => {
   const averageScore = Number(((scores.storyContent + scores.storytellingAbility + scores.technical) / 3).toFixed(1));
-  
-  const getBackgroundColor = (score: number): string => {
-    if (score < 5) return 'bg-red-900';
-    if (score >= 9) return 'bg-green-900';
-    return 'bg-blue-900';
-  };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4 mb-4">
-      <div className="mb-2 text-gray-400 text-sm">Judge: {judge?.teamName}</div>
+    <div className={`${getScoreBackgroundColor(averageScore)} rounded-lg p-4 mb-4`}>
+      <div className="mb-2 text-gray-200 text-sm">Judge: {judge?.teamName}</div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <div>
-            <div className="text-gray-400 text-sm">Story Content:</div>
-            <div className={`text-lg font-bold ${getScoreColor(scores.storyContent)}`}>
+            <div className="text-gray-300 text-sm">Story Content:</div>
+            <div className="text-lg font-bold text-white">
               {scores.storyContent}
             </div>
           </div>
           <div>
-            <div className="text-gray-400 text-sm">Storytelling:</div>
-            <div className={`text-lg font-bold ${getScoreColor(scores.storytellingAbility)}`}>
+            <div className="text-gray-300 text-sm">Storytelling:</div>
+            <div className="text-lg font-bold text-white">
               {scores.storytellingAbility}
             </div>
           </div>
           <div>
-            <div className="text-gray-400 text-sm">Technical:</div>
-            <div className={`text-lg font-bold ${getScoreColor(scores.technical)}`}>
+            <div className="text-gray-300 text-sm">Technical:</div>
+            <div className="text-lg font-bold text-white">
               {scores.technical}
             </div>
           </div>
         </div>
-        <div className={`${getBackgroundColor(averageScore)} rounded-lg p-4 flex flex-col items-center justify-center`}>
+        <div className="bg-black bg-opacity-20 rounded-lg p-4 flex flex-col items-center justify-center">
           <div className="text-gray-200 text-sm mb-1">Average</div>
           <div className="text-4xl font-bold text-white">{averageScore}</div>
         </div>
@@ -86,17 +88,50 @@ const JudgeScoreCard: React.FC<JudgeScoreCardProps> = ({ judge, scores }) => {
   );
 };
 
+type FrozenScores = {
+  _id: string;
+  type: 'frozenScores';
+  eventId: string;
+  storyId: string;
+  timestamp?: number;
+  finalScore?: number;
+  averageScores?: {
+    [judgeId: string]: number;
+  };
+}
+
 export const ProducerStoryDetail: React.FC = () => {
   const { eventId, storyId } = useParams();
+  if (!eventId || !storyId) {
+    throw new Error('Missing required parameters');
+  }
+
   const { useDocument, useLiveQuery } = useFireproof(`events/${eventId}`);
-  const { doc: story, merge: mergeStory, save: saveStory } = useDocument<Story>({ _id: storyId || '' } as Story);
+  const { doc: story } = useDocument<Story>({ _id: storyId } as Story);
+
+  const {
+    doc: frozenScores,
+    save: saveFrozenScores,
+    remove: removeFrozenScores
+  } = useDocument<FrozenScores>({
+    _id: `${storyId}-frozen`,
+    type: 'frozenScores',
+    storyId,
+    eventId,
+  } as FrozenScores);
 
   // Query all scores for this story
-  const { docs: scores } = useLiveQuery<ScoreDocument>('storyId', { key: storyId });
+  const { docs: scores } = useLiveQuery<ScoreDocument>(
+    (doc) => [doc.type, doc.storyId],
+    { key: ['score', storyId] }
+  );
 
   const uniqueJudgeIds = new Set(scores.map(score => score.judgeId));
 
-  const { docs: judges } = useLiveQuery<Judge>('_id', { keys: Array.from(uniqueJudgeIds) });
+  const { docs: judges } = useLiveQuery<Judge>(
+    '_id',
+    { keys: Array.from(uniqueJudgeIds) }
+  );
 
   const judgesById = new Map<string, Judge>(judges.map(judge => [judge._id, judge as Judge]));
 
@@ -115,6 +150,7 @@ export const ProducerStoryDetail: React.FC = () => {
   const calculateAverageScores = () => {
     const averageScores: { [judgeId: string]: number } = {};
     scoresByJudge.forEach((judgeScores, judgeId) => {
+      console.log('judgeScores', judgeId, judgeScores);
       const total = judgeScores.reduce((sum, score) => sum + score.value, 0);
       averageScores[judgeId] = Number((total / judgeScores.length).toFixed(1));
     });
@@ -123,37 +159,47 @@ export const ProducerStoryDetail: React.FC = () => {
 
   const handleFreezeScores = async () => {
     if (!story) return;
-    mergeStory({
-      frozenScore: {
-        timestamp: Date.now(),
-        averageScores: calculateAverageScores()
-      }
-    });
-    await saveStory();
+    const averageScores = calculateAverageScores();
+    const finalScore = Object.values(averageScores).reduce((sum, score) => sum + score, 0) / Object.values(averageScores).length;
+    console.log('averageScores', averageScores);
+    saveFrozenScores({
+      ...frozenScores,
+      finalScore,
+      averageScores,
+      timestamp: Date.now()
+    })
   };
 
   const handleUnfreezeScores = async () => {
-    if (!story) return;
-    if (!story.frozenScore) return;
-    delete story.frozenScore;
-    await saveStory();
+    console.log('handleUnfreezeScores');
+    removeFrozenScores();
   };
+
+  const frozenScoresQuery = useLiveQuery('type', { key: 'frozenScores', descending: true })
+
+  console.log('frozenScoresQuery', frozenScoresQuery.docs);
 
   if (!story) {
     return <div>Loading...</div>;
   }
 
+  if (frozenScores.timestamp) {
+    console.log('frozenScores', frozenScores);
+  } else {
+    console.log('story not frozen', frozenScores);
+  }
+
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Story Details</h1>
-      
-      {story.frozenScore && (
-        <div className="bg-blue-900 rounded-lg p-4 mb-6">
-          <h2 className="text-xl text-white mb-2">Frozen Scores</h2>
-          <p className="text-gray-300 text-sm mb-4">Frozen at: {new Date(story.frozenScore.timestamp).toLocaleString()}</p>
+
+      {frozenScores.timestamp && frozenScores.averageScores && (
+        <div className="bg-green-900 rounded-lg p-4 mb-6">
+          <h2 className="text-xl text-white mb-2">Frozen Score: {frozenScores.finalScore}</h2>
+          <p className="text-gray-300 text-sm mb-4">Frozen at: {new Date(frozenScores.timestamp).toLocaleString()}</p>
           <div className="grid grid-cols-2 gap-4">
-            {Object.entries(story.frozenScore.averageScores).map(([judgeId, score]) => (
-              <div key={judgeId} className="bg-blue-800 rounded p-3">
+            {Object.entries(frozenScores.averageScores).map(([judgeId, score]) => (
+              <div key={judgeId} className="bg-green-800 rounded p-3">
                 <div className="text-gray-300 text-sm">Judge: {judgesById.get(judgeId)?.teamName}</div>
                 <div className="text-2xl font-bold text-white">{score}</div>
               </div>
@@ -190,7 +236,7 @@ export const ProducerStoryDetail: React.FC = () => {
       <div className="mt-6">
         <h2 className="text-xl text-gray-200 mb-4">Judge Scores</h2>
         {Array.from(scoresByJudge.entries()).map(([judgeId, judgeScores]) => (
-          <JudgeScoreCard 
+          <JudgeScoreCard
             key={judgeId}
             judge={judgesById.get(judgeId)}
             scores={{
