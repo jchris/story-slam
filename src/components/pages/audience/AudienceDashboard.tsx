@@ -55,9 +55,12 @@ export const AudienceDashboard: React.FC = () => {
     <div className="p-4 bg-white">
       <div className="lg:flex lg:space-x-8">
         <div className="mb-6 lg:mb-0 lg:flex-shrink-0">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2 text-center">Share This Page</h2>
-          <div className="inline-block p-8 bg-gray-50 rounded-lg shadow-sm">
-            <QRCodeSVG value={`${window.location.origin}${window.location.pathname}`} size={150} />
+          <div className="text-center">
+            
+            <div className="inline-block p-4 bg-gray-50 rounded-lg shadow-sm">
+            <p className="text-gray-500 font-bold mb-4">Share This Page</p>
+              <QRCodeSVG value={`${window.location.origin}${window.location.pathname}`} size={150} />
+            </div>
           </div>
         </div>
         <div className="flex-grow">

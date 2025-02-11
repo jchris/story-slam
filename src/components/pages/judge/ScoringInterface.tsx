@@ -85,6 +85,12 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     return grey ? 'text-gray-500' : 'text-blue-500';
   };
 
+  const getScoreRgbColor = (score: number): string => {
+    if (score < 6) return 'rgb(239, 68, 68)';
+    if (score >= 9) return 'rgb(34, 197, 94)';
+    return 'rgb(59, 130, 246)';
+  };
+
   const handleScoreChange = (category: string, value: number) => {
     const newValue = Number(value);
     switch (category) {
@@ -135,7 +141,15 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
             value={scoreDoc.value}
             onChange={(e) => handleScoreChange(category, Number(e.target.value))}
             onMouseUp={() => handleScoreSave(category)}
-            className="w-full accent-blue-500"
+            className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+            style={{
+              backgroundColor: scoreDoc.value < 6 ? 'rgb(156, 29, 29)' : 
+                             scoreDoc.value >= 9 ? 'rgb(15, 127, 54)' : 
+                             'rgb(30, 75, 155)',
+              accentColor: scoreDoc.value < 6 ? 'rgb(239, 68, 68)' : 
+                          scoreDoc.value >= 9 ? 'rgb(34, 197, 94)' : 
+                          'rgb(59, 130, 246)'
+            }}
           />
         </div>
       </div>
