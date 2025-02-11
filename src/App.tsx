@@ -17,6 +17,7 @@ import JudgeOnboarding from './components/pages/judge/JudgeOnboarding';
 import JudgeStories from './components/pages/judge/JudgeStories';
 import JudgeStoryView from './components/pages/judge/JudgeStoryView';
 import AudienceDashboard from './components/pages/audience/AudienceDashboard';
+import { AudienceLayout } from './components/layouts/AudienceLayout';
 
 const App: React.FC = () => {
   return (
@@ -50,7 +51,9 @@ const App: React.FC = () => {
           </Route>
 
           {/* Audience routes */}
-          <Route path="/event/:eventId/leaderboard" element={<AudienceDashboard />} />
+          <Route path="/event/:eventId/leaderboard" element={<AudienceLayout />}>
+            <Route index element={<AudienceDashboard />} />
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>
