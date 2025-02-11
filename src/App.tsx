@@ -22,7 +22,7 @@ import { AudienceLayout } from './components/layouts/AudienceLayout';
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="App max-w-screen-sm mx-auto p-4">
+      <div className="App mx-auto p-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsList />} />

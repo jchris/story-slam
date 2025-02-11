@@ -177,6 +177,9 @@ export const ProducerStoryDetail: React.FC = () => {
     removeFrozenScores();
   };
 
+  const frozenScoresList = useLiveQuery<FrozenScores>('finalScore');
+  console.log({frozenScoresList : frozenScoresList.docs});
+
   if (!story) {
     return <div>Loading...</div>;
   }
