@@ -16,8 +16,8 @@ export function ProducerLayout() {
   }, [event]);
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-950 to-green-900 text-gray-100">
-      <header className="sticky top-0 z-50 w-full border-b border-green-800/50 bg-green-900/95 backdrop-blur supports-[backdrop-filter]:bg-green-900/60 shadow-lg">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <header className="sticky top-0 z-50 w-full border-b border-green-800/50 bg-gradient-to-b from-green-950 to-green-900 backdrop-blur supports-[backdrop-filter]:bg-green-900/60 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex h-auto py-2 sm:py-3 items-center">
             <div className="flex flex-col min-w-0">
