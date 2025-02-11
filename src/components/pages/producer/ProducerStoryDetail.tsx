@@ -29,18 +29,16 @@ interface ScoreDocument {
   timestamp?: number;
 }
 
-// const getScoreColor = (score: number, grey?: boolean): string => {
-//   if (score < 6) return 'text-red-500';
-//   if (score >= 9) return 'text-green-500';
-//   return grey ? 'text-gray-500' : 'text-blue-500';
-// };
+const getScoreColor = (score: number, grey?: boolean): string => {
+  if (score < 6) return 'text-red-500';
+  if (score >= 9) return 'text-green-500';
+  return grey ? 'text-gray-500' : 'text-blue-500';
+};
 
 const getScoreBackgroundColor = (score: number): string => {
-  if (score < 3) return 'bg-red-800';
-  if (score < 5) return 'bg-red-700';
-  if (score < 7) return 'bg-yellow-700';
-  if (score < 8.5) return 'bg-green-700';
-  return 'bg-green-800';
+  if (score < 6) return 'bg-red-900';
+  if (score >= 9) return 'bg-green-900';
+  return 'bg-blue-900';
 };
 
 interface JudgeScoreCardProps {
@@ -55,31 +53,37 @@ interface JudgeScoreCardProps {
 const JudgeScoreCard: React.FC<JudgeScoreCardProps> = ({ judge, scores }) => {
   const averageScore = Number(((scores.storyContent + scores.storytellingAbility + scores.technical) / 3).toFixed(1));
 
+  const getBackgroundColor = (score: number): string => {
+    if (score < 5) return 'bg-red-900';
+    if (score >= 9) return 'bg-green-900';
+    return 'bg-blue-900';
+  };
+
   return (
-    <div className={`${getScoreBackgroundColor(averageScore)} rounded-lg p-4 mb-4`}>
-      <div className="mb-2 text-gray-200 text-sm">Judge: {judge?.teamName}</div>
+    <div className="bg-gray-800 rounded-lg p-4 mb-4">
+      <div className="mb-2 text-gray-400 text-sm">Judge: {judge?.teamName}</div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <div>
-            <div className="text-gray-300 text-sm">Story Content:</div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-gray-400 text-sm">Story Content:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.storyContent)}`}>
               {scores.storyContent}
             </div>
           </div>
           <div>
-            <div className="text-gray-300 text-sm">Storytelling:</div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-gray-400 text-sm">Storytelling:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.storytellingAbility)}`}>
               {scores.storytellingAbility}
             </div>
           </div>
           <div>
-            <div className="text-gray-300 text-sm">Technical:</div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-gray-400 text-sm">Technical:</div>
+            <div className={`text-lg font-bold ${getScoreColor(scores.technical)}`}>
               {scores.technical}
             </div>
           </div>
         </div>
-        <div className="bg-black bg-opacity-20 rounded-lg p-4 flex flex-col items-center justify-center">
+        <div className={`${getBackgroundColor(averageScore)} rounded-lg p-4 flex flex-col items-center justify-center`}>
           <div className="text-gray-200 text-sm mb-1">Average</div>
           <div className="text-4xl font-bold text-white">{averageScore}</div>
         </div>
@@ -193,15 +197,18 @@ export const ProducerStoryDetail: React.FC = () => {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Story Details</h1>
 
-      {frozenScores.timestamp && frozenScores.averageScores && (
-        <div className="bg-green-900 rounded-lg p-4 mb-6">
-          <h2 className="text-xl text-white mb-2">Frozen Score: {frozenScores.finalScore}</h2>
+      {frozenScores.timestamp && frozenScores.averageScores && frozenScores.finalScore && (
+        <div className={`bg-gray-800 rounded-lg p-4 mb-6`}>
+          <h2 className="text-xl text-white mb-2">Frozen Score</h2>
+          <p className={`text-2xl font-bold ${getScoreColor(frozenScores.finalScore)}`}>
+            {frozenScores.finalScore}
+          </p>
           <p className="text-gray-300 text-sm mb-4">Frozen at: {new Date(frozenScores.timestamp).toLocaleString()}</p>
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(frozenScores.averageScores).map(([judgeId, score]) => (
-              <div key={judgeId} className="bg-green-800 rounded p-3">
+              <div key={judgeId} className={`rounded p-3 bg-gray-700`}>
                 <div className="text-gray-300 text-sm">Judge: {judgesById.get(judgeId)?.teamName}</div>
-                <div className="text-2xl font-bold text-white">{score}</div>
+                <div className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}</div>
               </div>
             ))}
           </div>
