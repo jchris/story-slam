@@ -11,32 +11,30 @@ export function EventLayout() {
   const {doc: event } = useDocument<EventDoc>({_id: 'event-info'} as EventDoc);
   
   return (
-    <div className="min-h-screen bg-blue-900 text-gray-100 p-4">
-      <header className="sticky top-0 z-50 w-full border-b border-blue-700 bg-blue-800/95 backdrop-blur supports-[backdrop-filter]:bg-blue-800/60 shadow-lg">
-        <div className="container flex h-16 items-center px-4">
-          <div className="flex w-full">
-            <div className="flex items-center space-x-6">
+    <div className="min-h-screen bg-blue-900 text-gray-100">
+      <header className="sticky top-0 z-50 w-full border-b border-blue-800/50 bg-gradient-to-b from-blue-950 to-blue-900 backdrop-blur supports-[backdrop-filter]:bg-blue-900/60 shadow-lg">
+        <div className="container mx-auto px-4">
+          <div className="flex h-auto py-2 sm:py-3 items-center">
+            <div className="flex flex-col min-w-0">
               <Link 
-                className="text-lg font-bold text-white hover:text-blue-200 transition-colors px-3 py-2 rounded-md hover:bg-blue-700" 
+                className="text-lg sm:text-2xl font-bold text-white hover:text-blue-200 transition-colors tracking-tight" 
                 to={`/event/${eventId}`}
               >
-                Event: {event.name}
+                {event.name}
               </Link>
-              <Link 
-                className="text-lg font-semibold text-blue-100 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-blue-700" 
-                to="/events"
-              >
-                All Events
-              </Link>
+              <div className="text-blue-300/90 text-sm sm:text-base font-normal mt-0.5">
+                {event.theme && `(${event.theme})`} {event.venue && <span className="text-blue-300/90">{event.venue}</span>}
+                {event.date && <span className="text-blue-300/90"> • {event.date}</span>}
+              </div>
             </div>
           </div>
         </div>
       </header>
-      <main className="container mx-auto py-6">
-        <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="container mx-auto px-4">
+        <div className="flex-1 space-y-4 pt-6">
           <Outlet />
         </div>
-      </main>
+      </div>
     </div>
   );
 }

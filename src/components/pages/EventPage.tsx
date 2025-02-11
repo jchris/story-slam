@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 import { EventDoc } from '../../types';
@@ -11,6 +11,27 @@ export const EventPage: React.FC = () => {
   const { useDocument, useLiveQuery } = useFireproof(`events/${eventId}`);
   const { doc: event, merge, save } = useDocument<EventDoc>({ _id: 'event-info' } as EventDoc);
   const storyCount = useLiveQuery("type", { key: "story" }).length;
+
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(/(\d+)$/, num => `${num}${getSuffix(parseInt(num))}`);
+  };
+
+  const getSuffix = (day: number): string => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+
+  useEffect(() => {
+    if (!event.date) {
+      const today = new Date('2025-02-11T08:43:51-08:00');
+      merge({ date: formatDate(today) });
+    }
+  }, [event.date, merge]);
 
   const handleChange = (field: keyof EventDoc, value: string) => {
     merge({ [field]: value });
@@ -54,6 +75,16 @@ export const EventPage: React.FC = () => {
                 onChange={(e) => handleChange('venue', e.target.value)}
                 className="text-lg w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none px-2"
                 placeholder="Event Venue"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm text-gray-300 font-medium">Date</label>
+              <input
+                type="text"
+                value={event.date || ''}
+                onChange={(e) => handleChange('date', e.target.value)}
+                className="text-lg w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none px-2"
+                placeholder="Event Date"
               />
             </div>
           </div>

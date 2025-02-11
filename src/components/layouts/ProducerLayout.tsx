@@ -29,6 +29,7 @@ export function ProducerLayout() {
               </Link>
               <div className="text-green-300/90 text-sm sm:text-base font-normal mt-0.5">
                 {event.theme && `(${event.theme})`} {event.venue && <span className="text-green-300/90">{event.venue}</span>}
+                {event.date && <span className="text-green-300/90"> • {event.date}</span>}
               </div>
             </div>
           </div>

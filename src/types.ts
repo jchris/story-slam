@@ -22,4 +22,5 @@ export type EventDoc = {
   name: string;
   theme?: string;
   venue?: string;
+  date?: string;
 }

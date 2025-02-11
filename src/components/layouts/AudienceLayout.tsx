@@ -24,6 +24,7 @@ export function AudienceLayout() {
               <div className="text-2xl font-bold tracking-tight">{event.name}</div>
               <div className="text-gray-600 text-sm sm:text-base font-normal mt-0.5">
                 {event.theme && `(${event.theme})`} {event.venue && <span>{event.venue}</span>}
+                {event.date && <span> • {event.date}</span>}
               </div>
             </div>
           </div>

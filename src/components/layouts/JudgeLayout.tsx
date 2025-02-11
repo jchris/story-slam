@@ -34,6 +34,7 @@ export function JudgeLayout() {
               </Link>
               <div className="text-gray-300/90 text-sm sm:text-base font-normal mt-0.5">
                 {event.theme && `(${event.theme})`} {event.venue && <span className="text-gray-300/90">{event.venue}</span>}
+                {event.date && <span className="text-gray-300/90"> • {event.date}</span>}
               </div>
             </div>
             <div className="flex items-center space-x-6">
