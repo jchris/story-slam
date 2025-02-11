@@ -1,12 +1,19 @@
 import { Link, useParams, Outlet } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 import { EventDoc } from '../../types';
+import { useEffect } from 'react';
 
 export function ProducerLayout() {
   const { eventId } = useParams();
   if (!eventId) throw new Error('Event ID not found');
   const { useDocument } = useFireproof(`events/${eventId}`);
   const {doc: event } = useDocument<EventDoc>({_id: 'event-info'} as EventDoc);
+  
+
+  useEffect(() => {
+    if (!event.name) return;
+    document.title = `Producer - ${event.name}`;
+  }, [event]);
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-950 to-green-900 text-gray-100">
