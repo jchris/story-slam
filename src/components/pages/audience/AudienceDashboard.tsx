@@ -74,7 +74,7 @@ export const AudienceDashboard: React.FC = () => {
               <tbody className="divide-y divide-gray-200">
                 {frozenScores.docs
 
-                  .map((score, index) => (
+                  .map((score) => (
                     <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
 
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
