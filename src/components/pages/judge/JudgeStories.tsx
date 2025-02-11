@@ -15,27 +15,10 @@ export const JudgeStories: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Header Section */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-white">Event: Holocene Feb 21st</h1>
-            <div className="flex space-x-4 text-gray-300">
-              <div>
-                <span className="text-gray-500">Team:</span> Baca
-              </div>
-              <div>
-                <span className="text-gray-500">Nickname:</span> Eye Sack
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content */}
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-white">Stories to Judge</h2>
           {stories.length > 0 ? (
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-gray-300">Available Stories</h3>
               <div className="grid gap-4">
                 {stories.map(story => (
                   <Link
