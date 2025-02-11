@@ -154,7 +154,6 @@ export const ProducerStoryDetail: React.FC = () => {
   const calculateAverageScores = () => {
     const averageScores: { [judgeId: string]: number } = {};
     scoresByJudge.forEach((judgeScores, judgeId) => {
-      console.log('judgeScores', judgeId, judgeScores);
       const total = judgeScores.reduce((sum, score) => sum + score.value, 0);
       averageScores[judgeId] = Number((total / judgeScores.length).toFixed(1));
     });
@@ -165,7 +164,7 @@ export const ProducerStoryDetail: React.FC = () => {
     if (!story) return;
     const averageScores = calculateAverageScores();
     const finalScore = Object.values(averageScores).reduce((sum, score) => sum + score, 0) / Object.values(averageScores).length;
-    console.log('averageScores', averageScores);
+
     saveFrozenScores({
       ...frozenScores,
       finalScore,
@@ -175,48 +174,49 @@ export const ProducerStoryDetail: React.FC = () => {
   };
 
   const handleUnfreezeScores = async () => {
-    console.log('handleUnfreezeScores');
     removeFrozenScores();
   };
 
-  const frozenScoresQuery = useLiveQuery('type', { key: 'frozenScores', descending: true })
-
-  console.log('frozenScoresQuery', frozenScoresQuery.docs);
-
   if (!story) {
     return <div>Loading...</div>;
-  }
-
-  if (frozenScores.timestamp) {
-    console.log('frozenScores', frozenScores);
-  } else {
-    console.log('story not frozen', frozenScores);
   }
 
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Story Details</h1>
 
+      <div className="space-y-2">
+        <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
+        <p><span className="font-semibold">Created:</span> {new Date(story.timestamp).toLocaleString()}</p>
+      </div>
+
       {frozenScores.timestamp && frozenScores.averageScores && frozenScores.finalScore && (
-        <div className={`bg-gray-800 rounded-lg p-4 mb-6`}>
-          <h2 className="text-xl text-white mb-2">Frozen Score</h2>
-          <p className={`text-2xl font-bold ${getScoreColor(frozenScores.finalScore)}`}>
-            {frozenScores.finalScore}
-          </p>
-          <p className="text-gray-300 text-sm mb-4">Frozen at: {new Date(frozenScores.timestamp).toLocaleString()}</p>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(frozenScores.averageScores).map(([judgeId, score]) => (
-              <div key={judgeId} className={`rounded p-3 bg-gray-700`}>
-                <div className="text-gray-300 text-sm">Judge: {judgesById.get(judgeId)?.teamName}</div>
-                <div className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}</div>
+        <div className={`bg-gray-800 rounded-lg p-6 mb-6 relative`}>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h2 className="text-xl text-white font-semibold">Frozen Score</h2>
+              <p className="text-gray-400 text-sm">Frozen at: {new Date(frozenScores.timestamp).toLocaleString()}</p>
+            </div>
+            <div className={`${getScoreBackgroundColor(frozenScores.finalScore)} rounded-lg p-4 shadow-lg`}>
+             <div className="text-gray-200 font-medium mb-1"> Final Score</div>
+              <div className={`text-3xl font-bold ${getScoreColor(frozenScores.finalScore)}`}>
+                {frozenScores.finalScore}
               </div>
-            ))}
+            </div>
           </div>
+          <ul className="list-disc pl-8 space-y-1">
+            {Object.entries(frozenScores.averageScores).map(([judgeId, score]) => (
+              <li key={judgeId} className="flex items-center">
+                <span className="text-gray-200 font-medium mr-2">Judge: {judgesById.get(judgeId)?.teamName}</span>
+                <span className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
       <div className="flex space-x-4 mb-6">
-        {!story.frozenScore ? (
+        {!frozenScores.timestamp ? (
           <button
             onClick={handleFreezeScores}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
@@ -231,13 +231,6 @@ export const ProducerStoryDetail: React.FC = () => {
             Unfreeze Scores
           </button>
         )}
-      </div>
-
-      <div className="space-y-2">
-        <p><span className="font-semibold">Story ID:</span> {story._id}</p>
-        <p><span className="font-semibold">Storyteller:</span> {story.storyteller}</p>
-        <p><span className="font-semibold">Status:</span> {story.status}</p>
-        <p><span className="font-semibold">Created:</span> {new Date(story.timestamp).toLocaleString()}</p>
       </div>
 
       <div className="mt-6">
