@@ -204,14 +204,24 @@ export const ProducerStoryDetail: React.FC = () => {
               </div>
             </div>
           </div>
-          <ul className="list-disc pl-8 space-y-1">
-            {Object.entries(frozenScores.averageScores).map(([judgeId, score]) => (
-              <li key={judgeId} className="flex items-center">
-                <span className="text-gray-200 font-medium mr-2">Judge: {judgesById.get(judgeId)?.teamName}</span>
-                <span className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}</span>
-              </li>
-            ))}
-          </ul>
+          <table className="w-full bg-gray-700 rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-gray-600">
+                <th className="text-left text-gray-200 font-medium p-3">Judge</th>
+                <th className="text-left text-gray-200 font-medium p-3">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(frozenScores.averageScores).map(([judgeId, score], index) => (
+                <tr key={judgeId} className={index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600/50'}>
+                  <td className="text-gray-200 font-medium p-3">{judgesById.get(judgeId)?.teamName}</td>
+                  <td className="p-3">
+                    <span className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
