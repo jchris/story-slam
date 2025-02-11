@@ -27,7 +27,7 @@ export function JudgeLayout() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link
-                to={`/event/${eventId}/judge/${judgeId}`}
+                to={`/judge/${eventId}/${judgeId}`}
                 className="text-xl font-semibold text-white hover:text-blue-400 transition-colors"
               >
                 {event.name}
@@ -46,7 +46,7 @@ export function JudgeLayout() {
                 </li>
                 <li>
                   <Link
-                    to={`/event/${eventId}/judge/${judgeId}/stories`}
+                    to={`/judge/${eventId}/${judgeId}/stories`}
                     className="font-semibold text-gray-300 hover:text-blue-400 transition-colors"
                   >
                     Stories to Judge

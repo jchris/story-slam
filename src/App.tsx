@@ -44,7 +44,7 @@ const App: React.FC = () => {
           </Route>
 
           {/* Judge routes */}
-          <Route path="/event/:eventId/judge/:judgeId" element={<JudgeLayout />}>
+          <Route path="/judge/:eventId/:judgeId" element={<JudgeLayout />}>
             <Route index element={<JudgeOnboarding />} />
             <Route path="stories" element={<JudgeStories />} />
             <Route path="story/:storyId" element={<JudgeStoryView />} />

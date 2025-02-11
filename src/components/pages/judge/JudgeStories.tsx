@@ -23,7 +23,7 @@ export const JudgeStories: React.FC = () => {
                 {stories.map(story => (
                   <Link
                     key={story._id}
-                    to={`/event/${eventId}/judge/${judgeId}/story/${story._id}`}
+                    to={`/judge/${eventId}/${judgeId}/story/${story._id}`}
                     className="block bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors duration-200 shadow-md border border-gray-700"
                   >
                     <div className="flex justify-between items-center">

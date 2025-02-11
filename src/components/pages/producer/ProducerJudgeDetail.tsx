@@ -34,7 +34,7 @@ export const ProducerJudgeDetail: React.FC = () => {
     save();
   };
 
-  const theURL = `${window.location.origin}/event/${eventId}/judge/${judgeId}`;
+  const theURL = `${window.location.origin}/judge/${eventId}/${judgeId}`;
   
   return (
     <div className="space-y-6">
