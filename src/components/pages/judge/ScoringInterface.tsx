@@ -84,13 +84,7 @@ const ScoringInterface: React.FC<Props> = ({ eventId, judgeId, storyId }) => {
     if (score >= 9) return 'text-green-500';
     return grey ? 'text-gray-500' : 'text-blue-500';
   };
-
-  const getScoreRgbColor = (score: number): string => {
-    if (score < 6) return 'rgb(239, 68, 68)';
-    if (score >= 9) return 'rgb(34, 197, 94)';
-    return 'rgb(59, 130, 246)';
-  };
-
+  
   const handleScoreChange = (category: string, value: number) => {
     const newValue = Number(value);
     switch (category) {
