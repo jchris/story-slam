@@ -22,7 +22,7 @@ export function JudgeLayout() {
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full bg-gray-800/95 backdrop-blur border-b border-gray-700 shadow-lg">
+      <header className="sticky top-0 z-50 w-full bg-blue-800/95 backdrop-blur border-b border-gray-700 shadow-lg">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-4">

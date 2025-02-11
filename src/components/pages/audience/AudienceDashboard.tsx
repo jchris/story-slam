@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
+import { QRCodeSVG } from 'qrcode.react';
 import { Judge, Story } from '../../../types';
 
 type FrozenScores = {
@@ -52,22 +53,31 @@ export const AudienceDashboard: React.FC = () => {
 
   return (
     <div className="p-4 bg-white">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Event: Holocene Feb 21st</h1>
+      <div className="flex justify-between items-start mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Event: Holocene Feb 21st</h1>
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">Share This Page</h2>
+          <div className="inline-block p-4 bg-gray-50 rounded-lg shadow-sm">
+            <QRCodeSVG value={`${window.location.origin}${window.location.pathname}`} size={150} />
+          </div>
+        </div>
+      </div>
       <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-200">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-white relative">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
+              <th className="w-8 px-2 py-4 text-left text-sm font-normal text-gray-400">#</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Storyteller</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Final Score</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Judge Scores</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Time</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {frozenScores.docs
-              .sort((a, b) => (a.finalScore || 0) - (b.finalScore || 0))
-              .map((score) => (
+              .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+              .map((score, index) => (
               <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
+                <td className="w-8 px-2 py-4 text-sm text-gray-400 text-center">{index + 1}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
                   {storiesById[score.storyId]?.storyteller}
                 </td>
@@ -91,9 +101,6 @@ export const AudienceDashboard: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {score.timestamp ? new Date(score.timestamp).toLocaleString() : 'N/A'}
                 </td>
               </tr>
             ))}
