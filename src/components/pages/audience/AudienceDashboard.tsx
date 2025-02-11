@@ -53,59 +53,60 @@ export const AudienceDashboard: React.FC = () => {
 
   return (
     <div className="p-4 bg-white">
-      <div className="flex justify-between items-start mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Event: Holocene Feb 21st</h1>
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Share This Page</h2>
-          <div className="inline-block p-4 bg-gray-50 rounded-lg shadow-sm">
+      <div className="lg:flex lg:space-x-8">
+        <div className="mb-6 lg:mb-0 lg:flex-shrink-0">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2 text-center">Share This Page</h2>
+          <div className="inline-block p-8 bg-gray-50 rounded-lg shadow-sm">
             <QRCodeSVG value={`${window.location.origin}${window.location.pathname}`} size={150} />
           </div>
         </div>
-      </div>
-      <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-200">
-        <table className="min-w-full bg-white relative">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="w-8 px-2 py-4 text-left text-sm font-normal text-gray-400">#</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Storyteller</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Final Score</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Judge Scores</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {frozenScores.docs
-              .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
-              .map((score, index) => (
-              <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
-                <td className="w-8 px-2 py-4 text-sm text-gray-400 text-center">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                  {storiesById[score.storyId]?.storyteller}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className={`inline-flex items-center justify-center ${getScoreBackgroundColor(score.finalScore)} rounded-full px-4 py-1.5`}>
-                    <span className={`text-lg font-bold ${getScoreColor(score.finalScore)}`}>
-                      {score.finalScore?.toFixed(1) || 'N/A'}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2 flex-wrap">
-                    {score.averageScores && Object.entries(score.averageScores).map(([judgeId, score]) => (
-                      <div key={judgeId} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
-                        <span
-                          className={`${getScoreColor(score)} font-semibold`}
-                        >
-                          {score.toFixed(1)}
+        <div className="flex-grow">
+          <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-200">
+            <table className="min-w-full bg-white relative">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="w-8 px-2 py-4 text-left text-sm font-normal text-gray-400">#</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Storyteller</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Final Score</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Judge Scores</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {frozenScores.docs
+                  .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+                  .map((score, index) => (
+                  <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
+                    <td className="w-8 px-2 py-4 text-sm text-gray-400 text-center">{index + 1}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                      {storiesById[score.storyId]?.storyteller}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className={`inline-flex items-center justify-center ${getScoreBackgroundColor(score.finalScore)} rounded-full px-4 py-1.5`}>
+                        <span className={`text-lg font-bold ${getScoreColor(score.finalScore)}`}>
+                          {score.finalScore?.toFixed(1) || 'N/A'}
                         </span>
-                        <span className="text-gray-600 text-sm">{judgesById[judgeId]?.teamName}</span>
                       </div>
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2 flex-wrap">
+                        {score.averageScores && Object.entries(score.averageScores).map(([judgeId, score]) => (
+                          <div key={judgeId} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
+                            <span
+                              className={`${getScoreColor(score)} font-semibold`}
+                            >
+                              {score.toFixed(1)}
+                            </span>
+                            <span className="text-gray-600 text-sm">{judgesById[judgeId]?.teamName}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

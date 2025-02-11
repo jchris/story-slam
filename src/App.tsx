@@ -51,7 +51,7 @@ const App: React.FC = () => {
           </Route>
 
           {/* Audience routes */}
-          <Route path="/event/:eventId/leaderboard" element={<AudienceLayout />}>
+          <Route path="/leaderboard/:eventId" element={<AudienceLayout />}>
             <Route index element={<AudienceDashboard />} />
           </Route>
         </Routes>

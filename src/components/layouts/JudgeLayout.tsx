@@ -37,7 +37,7 @@ export function JudgeLayout() {
               <ul className="flex space-x-6">
                 <li>
                   <Link
-                    to={`/event/${eventId}/leaderboard`}
+                    to={`/leaderboard/${eventId}`}
                     className="font-semibold text-green-300 hover:text-white transition-colors relative group"
                   >
                     Leaderboard

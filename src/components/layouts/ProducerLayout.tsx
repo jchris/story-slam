@@ -47,7 +47,7 @@ export function ProducerLayout() {
             </li>
             <li>
               <Link 
-                to={`/event/${eventId}/leaderboard`}
+                to={`/leaderboard/${eventId}`}
                 className="text-lg font-semibold text-green-300 hover:text-white transition-colors relative group"
               >
                 Leaderboard
