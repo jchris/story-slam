@@ -35,7 +35,7 @@ export const AudienceDashboard: React.FC = () => {
   if (!eventId) throw new Error('Event ID not found');
   const { useLiveQuery } = useFireproof(`events/${eventId}`);
 
-  const frozenScores = useLiveQuery<FrozenScores>('finalScore');
+  const frozenScores = useLiveQuery<FrozenScores>('finalScore', { descending: true });
 
   const stories = useLiveQuery<Story>('type', { key: 'story' });
 
@@ -45,7 +45,7 @@ export const AudienceDashboard: React.FC = () => {
   }, {} as Record<string, Story>);
 
   const judges = useLiveQuery<Judge>('type', { key: 'judge' });
-  
+
   const judgesById = judges.docs.reduce((acc, judge) => {
     acc[judge._id] = judge;
     return acc;
@@ -65,7 +65,7 @@ export const AudienceDashboard: React.FC = () => {
             <table className="min-w-full bg-white relative">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="w-8 px-2 py-4 text-left text-sm font-normal text-gray-400">#</th>
+
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Storyteller</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Final Score</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Judge Scores</th>
@@ -73,36 +73,36 @@ export const AudienceDashboard: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {frozenScores.docs
-                  .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+
                   .map((score, index) => (
-                  <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
-                    <td className="w-8 px-2 py-4 text-sm text-gray-400 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                      {storiesById[score.storyId]?.storyteller}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`inline-flex items-center justify-center ${getScoreBackgroundColor(score.finalScore)} rounded-full px-4 py-1.5`}>
-                        <span className={`text-lg font-bold ${getScoreColor(score.finalScore)}`}>
-                          {score.finalScore?.toFixed(1) || 'N/A'}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex gap-2 flex-wrap">
-                        {score.averageScores && Object.entries(score.averageScores).map(([judgeId, score]) => (
-                          <div key={judgeId} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
-                            <span
-                              className={`${getScoreColor(score)} font-semibold`}
-                            >
-                              {score.toFixed(1)}
-                            </span>
-                            <span className="text-gray-600 text-sm">{judgesById[judgeId]?.teamName}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                    <tr key={score._id} className="hover:bg-gray-50 transition-colors duration-150">
+
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                        {storiesById[score.storyId]?.storyteller}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className={`inline-flex items-center justify-center ${getScoreBackgroundColor(score.finalScore)} rounded-full px-4 py-1.5`}>
+                          <span className={`text-lg font-bold ${getScoreColor(score.finalScore)}`}>
+                            {score.finalScore?.toFixed(1) || 'N/A'}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex gap-2 flex-wrap">
+                          {score.averageScores && Object.entries(score.averageScores).map(([judgeId, score]) => (
+                            <div key={judgeId} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
+                              <span
+                                className={`${getScoreColor(score)} font-semibold`}
+                              >
+                                {score.toFixed(1)}
+                              </span>
+                              <span className="text-gray-600 text-sm">{judgesById[judgeId]?.teamName}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

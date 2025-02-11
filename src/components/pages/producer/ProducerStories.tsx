@@ -34,7 +34,7 @@ export const ProducerStories: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-100 mb-6">Stories Management</h1>
+        <h1 className="text-3xl font-bold text-gray-100 mb-6">Storyteller Management</h1>
         
         <div className="bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-100 mb-4">Add Story</h2>
@@ -58,9 +58,9 @@ export const ProducerStories: React.FC = () => {
         </div>
 
         <div className="bg-gray-800 rounded-lg shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-100 mb-4">Story List</h2>
+          <h2 className="text-xl font-semibold text-gray-100 mb-4">Storyteller List</h2>
           {stories.length === 0 ? (
-            <p className="text-gray-400 text-center py-4">No stories added yet</p>
+            <p className="text-gray-400 text-center py-4">No storytellers added yet</p>
           ) : (
             <ul className="divide-y divide-gray-700">
               {stories.map(story => (
