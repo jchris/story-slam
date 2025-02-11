@@ -1,13 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
+import { EventDoc } from '../../types';
 
-type EventDoc = {
-  _id: string;
-  name: string;
-  theme?: string;
-  venue?: string;
-}
 
 export const EventPage: React.FC = () => {
   const { eventId } = useParams();

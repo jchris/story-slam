@@ -1,6 +1,6 @@
 import { useParams, Outlet } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
-import { EventDoc } from './EventLayout';
+import { EventDoc } from '../../types';
 
 export function AudienceLayout() {
   const { eventId } = useParams();

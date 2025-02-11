@@ -1,10 +1,7 @@
 import { Outlet, Link, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
+import { EventDoc } from '../../types';
 
-export type EventDoc = {
-  _id: string;
-  name: string;
-}
 
 export function EventLayout() {
   const { eventId } = useParams();

@@ -16,3 +16,10 @@ export interface Judge extends BaseDocument {
   teamName: string;
   status: 'active' | 'inactive';
 }
+
+export type EventDoc = {
+  _id: string;
+  name: string;
+  theme?: string;
+  venue?: string;
+}

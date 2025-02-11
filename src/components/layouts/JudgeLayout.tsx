@@ -2,7 +2,7 @@ import { Link, Outlet, useParams } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof';
 import { Judge } from '../../types';
 import { useEffect, useState } from 'react';
-import { EventDoc } from './EventLayout';
+import { EventDoc } from '../../types';
 
 export function JudgeLayout() {
   const { eventId, judgeId } = useParams();
@@ -30,8 +30,9 @@ export function JudgeLayout() {
                 to={`/judge/${eventId}/${judgeId}`}
                 className="text-xl font-semibold text-white hover:text-blue-400 transition-colors"
               >
-                {event.name}
+                {event.name} {event.theme && <span className="text-gray-400">({event.theme})</span>}
               </Link>
+              {event.venue && <div className="text-gray-400">{event.venue}</div>}
             </div>
             <nav>
               <ul className="flex space-x-6">
