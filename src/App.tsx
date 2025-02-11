@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { EventLayout } from './components/layouts/EventLayout';
 import { ProducerLayout } from './components/layouts/ProducerLayout';
 import { JudgeLayout } from './components/layouts/JudgeLayout';
+import { TopLayout } from './components/layouts/TopLayout';
 
 // Page imports
 import Home from './components/pages/Home';
@@ -24,9 +25,11 @@ const App: React.FC = () => {
     <BrowserRouter>
       <div className="App mx-auto p-4">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<EventsList />} />
-          
+          <Route element={<TopLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/events" element={<EventsList />} />
+          </Route>
+
           {/* Event routes */}
           <Route path="/event/:eventId" element={<EventLayout />}>
               <Route index element={<EventPage />} />

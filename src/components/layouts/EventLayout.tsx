@@ -15,11 +15,22 @@ export function EventLayout() {
   
   return (
     <div className="min-h-screen bg-blue-900 text-gray-100 p-4">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <div className="mr-4 hidden md:flex">
-            <div className="mr-6 flex items-center space-x-2">
-              <Link className="link" to={`/event/${eventId}/producer`}>Event: {event.name}</Link>
+      <header className="sticky top-0 z-50 w-full border-b border-blue-700 bg-blue-800/95 backdrop-blur supports-[backdrop-filter]:bg-blue-800/60 shadow-lg">
+        <div className="container flex h-16 items-center px-4">
+          <div className="flex w-full">
+            <div className="flex items-center space-x-6">
+              <Link 
+                className="text-lg font-bold text-white hover:text-blue-200 transition-colors px-3 py-2 rounded-md hover:bg-blue-700" 
+                to={`/event/${eventId}`}
+              >
+                Event: {event.name}
+              </Link>
+              <Link 
+                className="text-lg font-semibold text-blue-100 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-blue-700" 
+                to="/events"
+              >
+                All Events
+              </Link>
             </div>
           </div>
         </div>

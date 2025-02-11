@@ -16,7 +16,7 @@ export function ProducerLayout() {
             <div className="flex items-center space-x-2">
               <Link 
                 className="text-2xl font-bold text-white hover:text-green-200 transition-colors tracking-tight" 
-                to={`/event/${eventId}/producer`}
+                to={`/event/${eventId}`}
               >
                 <span className="text-green-400 font-normal">Event:</span> {event.name}
               </Link>
