@@ -11,7 +11,7 @@ export function JudgeLayout() {
   const { useDocument } = useFireproof(`events/${eventId}`);
   const { doc: judge } = useDocument<Judge>({ _id: judgeId } as Judge);
   const [nickname] = useState(() => localStorage.getItem(`judge-${judgeId}-nickname`) || '');
-  const { doc: event } = useDocument<EventDoc>({_id: 'event-info'} as EventDoc);
+  const { doc: event } = useDocument<EventDoc>({ _id: 'event-info' } as EventDoc);
 
   useEffect(() => {
     if (!judge.teamName) return;
@@ -26,7 +26,7 @@ export function JudgeLayout() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link 
+              <Link
                 to={`/event/${eventId}/judge/${judgeId}`}
                 className="text-xl font-semibold text-white hover:text-blue-400 transition-colors"
               >
@@ -37,8 +37,17 @@ export function JudgeLayout() {
               <ul className="flex space-x-6">
                 <li>
                   <Link
+                    to={`/event/${eventId}/leaderboard`}
+                    className="font-semibold text-green-300 hover:text-white transition-colors relative group"
+                  >
+                    Leaderboard
+                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-green-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to={`/event/${eventId}/judge/${judgeId}/stories`}
-                    className="text-gray-300 hover:text-blue-400 transition-colors font-medium"
+                    className="font-semibold text-gray-300 hover:text-blue-400 transition-colors"
                   >
                     Stories to Judge
                   </Link>

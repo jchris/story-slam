@@ -45,6 +45,15 @@ export function ProducerLayout() {
                 <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-green-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </Link>
             </li>
+            <li>
+              <Link 
+                to={`/event/${eventId}/leaderboard`}
+                className="text-lg font-semibold text-green-300 hover:text-white transition-colors relative group"
+              >
+                Leaderboard
+                <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-green-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+              </Link>
+            </li>
           </ul>
         </nav>
         <main className="py-6">

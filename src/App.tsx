@@ -50,7 +50,7 @@ const App: React.FC = () => {
           </Route>
 
           {/* Audience routes */}
-          <Route path="/event/:eventId/audience" element={<AudienceDashboard />} />
+          <Route path="/event/:eventId/leaderboard" element={<AudienceDashboard />} />
         </Routes>
       </div>
     </BrowserRouter>
