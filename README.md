@@ -1,50 +1,56 @@
-# React + TypeScript + Vite
+# Story Slam Event Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern platform designed to assist producers and judges with evaluating stories in a fair and transparent manner, inspired by The Moth story podcast's live Story Slam events.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Fair Judging**: Streamlined process for evaluating stories with standardized criteria and transparent scoring
+- **Global Events**: Organize and manage story slam events anywhere in the world
+- **Real-time Results**: Track scores and rankings in real-time as judges evaluate performances
 
-## Expanding the ESLint configuration
+## Using the Platform
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### For Event Producers
 
-- Configure the top-level `parserOptions` property like this:
+1. **Creating an Event**
+   - Navigate to the Events page from the home screen
+   - Click "Create New Event"
+   - Fill in event details including name, theme, and venue
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. **Managing Stories**
+   - Access the Producer Dashboard for your event
+   - Add storytellers as they sign up
+   - Monitor story status (pending/judged)
+   - View real-time scoring
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+3. **Managing Judges**
+   - Add judges through the Producer Dashboard
+   - Assign unique team names to each judge
+   - Monitor judging progress in real-time
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### For Judges
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. **Accessing Your Event**
+   - Use the provided event link from your producer
+   - Enter your assigned team name
+   - Access your judging dashboard
+
+2. **Scoring Stories**
+   - View the list of pending stories
+   - Score each performance based on provided criteria
+   - Submit scores in real-time
+
+### For Audience Members
+
+- View real-time scoring updates
+- Track storyteller rankings
+- Experience an engaging and transparent judging process
+
+## Getting Started
+
+1. Visit the home page at `/`
+2. Click "Get Started" to view available events
+3. Create a new event or join an existing one
+4. Follow the role-specific instructions above based on whether you're a producer, judge, or audience member
+
+For support or questions, please contact the platform administrators.
